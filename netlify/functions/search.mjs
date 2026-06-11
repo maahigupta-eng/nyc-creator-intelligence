@@ -9,7 +9,7 @@ export default async (req) => {
       'anthropic-version': '2023-06-01',
       'anthropic-beta': 'web-search-2025-03-05'
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify({ ...body, max_tokens: 4000 })
   });
 
   const data = await response.json();
@@ -18,4 +18,7 @@ export default async (req) => {
   });
 };
 
-export const config = { path: '/api/search' };
+export const config = { 
+  path: '/api/search',
+  timeout: 30
+};
