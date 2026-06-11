@@ -1,2 +1,7 @@
 [functions]
-  timeout = 30
+  directory = "netlify/functions"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
