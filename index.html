@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Intelligence — NYC Mayor's Office of New Media</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #003DA5;
+  --yellow: #FCCC0A;
+  --orange: #E05C00;
+  --charcoal: #1A1A1A;
+  --mid: #4A4A4A;
+  --light: #F0F2F7;
+  --white: #FFFFFF;
+  --border: #D0D5E8;
+  --green: #00933C;
+  --red: #EE352C;
+  --purple: #6E3FA3;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--light);
+  color: var(--charcoal);
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: var(--blue);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 4px solid var(--yellow);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.nyc-badge {
+  background: var(--yellow);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: -0.3px;
+}
+.header-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* MAIN LAYOUT */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--blue);
+  padding: 0;
+  position: sticky;
+  top: 80px;
+}
+.sidebar-section {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-section:last-child { border-bottom: none; }
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+/* TOPIC INPUT */
+#topic-input {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--charcoal);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  background: var(--light);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s;
+}
+#topic-input:focus { border-color: var(--blue); background: var(--white); }
+#topic-input::placeholder { color: #9AA3BC; font-style: italic; }
+
+/* BOROUGH SELECTOR - subway map inspired */
+.borough-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.borough-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mid);
+  transition: all 0.15s;
+  text-align: left;
+}
+.borough-btn:hover { border-color: var(--blue); color: var(--blue); }
+.borough-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+.borough-btn.active .bline { background: var(--white); }
+.bline {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.bline-manhattan { background: var(--red); }
+.bline-brooklyn { background: var(--orange); }
+.bline-queens { background: var(--green); }
+.bline-bronx { background: var(--purple); }
+.bline-staten { background: #808183; }
+.bline-all { background: var(--blue); }
+
+/* FILTER CHIPS */
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  color: var(--mid);
+  transition: all 0.15s;
+  border-radius: 2px;
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); }
+.chip.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+/* SEARCH BUTTON */
+#search-btn {
+  width: 100%;
+  background: var(--yellow);
+  color: var(--blue);
+  border: none;
+  padding: 13px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#search-btn:hover { background: #e8b800; }
+#search-btn:disabled { background: #D0D5E8; color: #9AA3BC; cursor: not-allowed; }
+
+/* RESULTS AREA */
+.results-area { min-height: 400px; }
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--blue);
+}
+.results-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--blue);
+}
+.result-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  background: var(--light);
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+}
+
+/* EMPTY / LOADING STATE */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  color: var(--mid);
+  gap: 12px;
+}
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+.empty-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--blue);
+  opacity: 0.5;
+}
+.empty-sub { font-size: 13px; max-width: 300px; line-height: 1.6; opacity: 0.7; }
+
+.loading-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  margin-bottom: 20px;
+  display: none;
+  overflow: hidden;
+}
+.loading-bar.active { display: block; }
+.loading-bar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: var(--yellow);
+  animation: slide 1s ease-in-out infinite;
+}
+@keyframes slide { 0%{transform:translateX(-100%)} 100%{transform:translateX(350%)} }
+
+/* CREATOR CARDS */
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.creator-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  padding: 0;
+  transition: border-color 0.15s;
+}
+.creator-card:hover { border-left-color: var(--orange); }
+.creator-card.type-offline { border-left-color: var(--green); }
+.creator-card.type-tiktok { border-left-color: var(--red); }
+.creator-card.type-instagram { border-left-color: var(--purple); }
+
+.card-top {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--light);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-identity { flex: 1; }
+.card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 2px;
+}
+.card-handle {
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: 500;
+}
+.card-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+.badge-platform-instagram { background: #E1306C22; color: #E1306C; border: 1px solid #E1306C44; }
+.badge-platform-tiktok { background: #EE352C22; color: #c0001a; border: 1px solid #EE352C44; }
+.badge-platform-offline { background: #00933C22; color: #00933C; border: 1px solid #00933C44; }
+.badge-platform-newsletter { background: #003DA522; color: #003DA5; border: 1px solid #003DA544; }
+.badge-age {
+  background: var(--light);
+  color: var(--mid);
+  border: 1px solid var(--border);
+}
+.badge-borough {
+  background: #FCCC0A33;
+  color: #7A5F00;
+  border: 1px solid #FCCC0A88;
+}
+
+.card-body { padding: 12px 18px; }
+.card-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.meta-item {}
+.meta-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 2px;
+}
+.meta-value { font-size: 12px; color: var(--charcoal); line-height: 1.4; }
+
+.alignment-box {
+  background: #003DA508;
+  border: 1px solid #003DA522;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+.alignment-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 3px;
+}
+.alignment-text { font-size: 12px; color: var(--charcoal); line-height: 1.5; }
+
+.outreach-box {
+  background: #FCCC0A15;
+  border: 1px solid #FCCC0A66;
+  padding: 10px 12px;
+}
+.outreach-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7A5F00;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.copy-btn {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--orange);
+  background: none;
+  border: 1px solid var(--orange);
+  padding: 2px 7px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+.copy-btn:hover { background: var(--orange); color: white; }
+.outreach-text { font-size: 12px; color: var(--charcoal); line-height: 1.6; font-style: italic; }
+
+.card-footer {
+  padding: 8px 18px;
+  background: var(--light);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.source-note { font-size: 10px; color: var(--mid); }
+.source-link { color: var(--blue); text-decoration: none; font-weight: 500; }
+.source-link:hover { text-decoration: underline; }
+
+/* DISCLAIMER */
+.disclaimer {
+  background: #1A1A1A;
+  color: rgba(255,255,255,0.6);
+  font-size: 10px;
+  line-height: 1.6;
+  padding: 10px 18px;
+  border-top: 1px solid #333;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="nyc-badge">NYC Mayor's Office</div>
+      <div>
+        <div class="header-title">Creator Intelligence</div>
+        <div class="header-sub">New Media &amp; Cultural Communications</div>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Policy Topic or Vertical</div>
+      <textarea id="topic-input" placeholder="e.g. congestion pricing, affordable housing, childcare subsidies, nightlife, small business..."></textarea>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Borough</div>
+      <div class="borough-grid">
+        <button class="borough-btn active" data-borough="All NYC" onclick="toggleBorough(this)">
+          <span class="bline bline-all">★</span> All NYC
+        </button>
+        <button class="borough-btn" data-borough="Manhattan" onclick="toggleBorough(this)">
+          <span class="bline bline-manhattan">A</span> Manhattan
+        </button>
+        <button class="borough-btn" data-borough="Brooklyn" onclick="toggleBorough(this)">
+          <span class="bline bline-brooklyn">J</span> Brooklyn
+        </button>
+        <button class="borough-btn" data-borough="Queens" onclick="toggleBorough(this)">
+          <span class="bline bline-queens">7</span> Queens
+        </button>
+        <button class="borough-btn" data-borough="The Bronx" onclick="toggleBorough(this)">
+          <span class="bline bline-bronx">D</span> The Bronx
+        </button>
+        <button class="borough-btn" data-borough="Staten Island" onclick="toggleBorough(this)">
+          <span class="bline bline-staten">SI</span> Staten Island
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Age Bracket</div>
+      <div class="chip-group" id="age-chips">
+        <div class="chip active" data-val="All ages" onclick="toggleChip(this, 'age')">All ages</div>
+        <div class="chip" data-val="Gen Z (18–27)" onclick="toggleChip(this, 'age')">Gen Z (18–27)</div>
+        <div class="chip" data-val="Millennials (28–43)" onclick="toggleChip(this, 'age')">Millennials (28–43)</div>
+        <div class="chip" data-val="Gen X (44–59)" onclick="toggleChip(this, 'age')">Gen X (44–59)</div>
+        <div class="chip" data-val="50+" onclick="toggleChip(this, 'age')">50+</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Creator Type</div>
+      <div class="chip-group" id="type-chips">
+        <div class="chip active" data-val="all" onclick="toggleChip(this, 'type')">All types</div>
+        <div class="chip" data-val="instagram" onclick="toggleChip(this, 'type')">Instagram</div>
+        <div class="chip" data-val="tiktok" onclick="toggleChip(this, 'type')">TikTok</div>
+        <div class="chip" data-val="offline" onclick="toggleChip(this, 'type')">Offline / Events</div>
+        <div class="chip" data-val="newsletter" onclick="toggleChip(this, 'type')">Newsletter</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Content Niche</div>
+      <div class="chip-group" id="niche-chips">
+        <div class="chip active" data-val="all niches" onclick="toggleChip(this, 'niche')">All niches</div>
+        <div class="chip" data-val="neighborhood community" onclick="toggleChip(this, 'niche')">Neighborhood</div>
+        <div class="chip" data-val="parenting family" onclick="toggleChip(this, 'niche')">Parenting</div>
+        <div class="chip" data-val="food culture" onclick="toggleChip(this, 'niche')">Food & Culture</div>
+        <div class="chip" data-val="personal finance cost of living" onclick="toggleChip(this, 'niche')">Finance / Cost of Living</div>
+        <div class="chip" data-val="housing real estate" onclick="toggleChip(this, 'niche')">Housing</div>
+        <div class="chip" data-val="nightlife entertainment" onclick="toggleChip(this, 'niche')">Nightlife</div>
+        <div class="chip" data-val="small business" onclick="toggleChip(this, 'niche')">Small Business</div>
+        <div class="chip" data-val="transit commuting" onclick="toggleChip(this, 'niche')">Transit</div>
+      </div>
+    </div>
+
+    <button id="search-btn" onclick="runSearch()">Find Creators →</button>
+
+    <div class="disclaimer">
+      All results are sourced from live web search. No creator profiles are invented or estimated. If a search returns limited results, that reflects what is publicly findable — not a tool failure.
+    </div>
+
+  </aside>
+
+  <!-- RESULTS -->
+  <main class="results-area">
+    <div class="loading-bar" id="loading-bar"></div>
+
+    <div id="results-container">
+      <div class="empty-state">
+        <div class="empty-icon">🗽</div>
+        <div class="empty-title">Ready to find creators</div>
+        <div class="empty-sub">Enter a policy topic or community vertical, set your filters, and run a search. Results come from live web data — every creator surfaced is real and findable.</div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// Filter state
+let selectedBorough = 'All NYC';
+let selectedAge = 'All ages';
+let selectedType = 'all';
+let selectedNiche = 'all niches';
+
+function toggleBorough(btn) {
+  document.querySelectorAll('.borough-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedBorough = btn.dataset.borough;
+}
+
+function toggleChip(chip, group) {
+  const groupMap = { age: 'age-chips', type: 'type-chips', niche: 'niche-chips' };
+  document.querySelectorAll(`#${groupMap[group]} .chip`).forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  if (group === 'age') selectedAge = chip.dataset.val;
+  if (group === 'type') selectedType = chip.dataset.val;
+  if (group === 'niche') selectedNiche = chip.dataset.val;
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+async function runSearch() {
+  const topic = document.getElementById('topic-input').value.trim();
+  if (!topic) {
+    document.getElementById('topic-input').focus();
+    return;
+  }
+
+  const btn = document.getElementById('search-btn');
+  const loading = document.getElementById('loading-bar');
+  const container = document.getElementById('results-container');
+
+  btn.disabled = true;
+  btn.textContent = 'Searching...';
+  loading.classList.add('active');
+  container.innerHTML = '<div class="empty-state"><div class="empty-sub" style="opacity:1">Searching NYC creator ecosystem — this uses live web data and may take 20–40 seconds.</div></div>';
+
+  const systemPrompt = `You are a creator research analyst for the NYC Mayor's Office of New Media and Cultural Communications under Mayor Zohran Mamdani. Your job is to find REAL, VERIFIABLE NYC creators and community figures who are relevant to a given policy topic.
+
+CRITICAL RULES:
+- Only return creators you have found through the web search results provided
+- Do NOT invent handles, follower counts, or names
+- Do NOT include creators you cannot verify exist
+- If search results are limited, return fewer cards rather than inventing profiles
+- Every "handle" must be one you found in search results, or mark it as "Search to verify"
+
+For each real creator you find, return a JSON object. Return an array of these objects and nothing else.
+
+Each object must have these exact keys:
+{
+  "name": "Real name or page name from search results",
+  "handle": "Handle if found, otherwise 'Search: [name] NYC [platform]'",
+  "platform": "instagram" | "tiktok" | "offline" | "newsletter",
+  "niche": "What they actually cover",
+  "borough": "Borough if known, otherwise 'NYC'",
+  "age_bracket": "Estimated audience age if determinable, otherwise 'Mixed'",
+  "reach": "Follower count if found, otherwise 'Not verified'",
+  "alignment": "Specific reason this creator is relevant to the policy topic",
+  "outreach_draft": "A short, genuine outreach message from the Mayor's office — 2-3 sentences, specific to what they actually do",
+  "source_note": "Where you found this — publication, website, or search result",
+  "type_class": "instagram" | "tiktok" | "offline" | "newsletter"
+}
+
+Return ONLY valid JSON array. No markdown, no preamble, no explanation.`;
+
+  const typeFilter = selectedType === 'all' ? 'Instagram, TikTok, offline events and clubs, newsletters' : selectedType;
+  const nicheFilter = selectedNiche === 'all niches' ? '' : ` focused on ${selectedNiche}`;
+  const boroughFilter = selectedBorough === 'All NYC' ? 'New York City' : `${selectedBorough}, NYC`;
+  const ageFilter = selectedAge === 'All ages' ? '' : ` with audience age ${selectedAge}`;
+
+  const userMessage = `Find real NYC creators and community figures for the Mayor's Office of New Media.
+
+Policy topic / vertical: "${topic}"
+Location: ${boroughFilter}${ageFilter}
+Creator types wanted: ${typeFilter}${nicheFilter}
+
+Search for:
+1. NYC Instagram pages or accounts covering "${topic}" in ${boroughFilter}
+2. NYC TikTok creators covering "${topic}" or related cost-of-living/community topics in ${boroughFilter}
+3. Offline community organizers, club runners, or event hosts in ${boroughFilter} connected to "${topic}"
+4. Any NYC newsletter writers or local media covering this topic
+
+For each real person or account you find, return their profile. Only include what you can verify from search results.`;
+
+  try {
+    const response = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+
+    const data = await response.json();
+
+    // Extract text content from response (may include tool use blocks)
+    let rawText = '';
+    if (data.content) {
+      for (const block of data.content) {
+        if (block.type === 'text') rawText += block.text;
+      }
+    }
+
+    const clean = rawText.replace(/```json|```/g, '').trim();
+    let creators = [];
+
+    try {
+      // Find JSON array in response
+      const match = clean.match(/\[[\s\S]*\]/);
+      if (match) creators = JSON.parse(match[0]);
+    } catch(e) {
+      console.error('Parse error:', e, clean.substring(0, 500));
+    }
+
+    renderResults(creators, topic);
+    document.querySelector('.results-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch(err) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-sub" style="color:#c00">Search failed. Please try again.</div></div>`;
+    console.error(err);
+  } finally {
+    loading.classList.remove('active');
+    btn.disabled = false;
+    btn.textContent = 'Find Creators →';
+  }
+}
+
+function renderResults(creators, topic) {
+  const container = document.getElementById('results-container');
+
+  if (!creators || creators.length === 0) {
+    container.innerHTML = `
+      <div class="results-header">
+        <div class="results-title">Results for "${topic}"</div>
+        <div class="result-count">0 found</div>
+      </div>
+      <div class="empty-state">
+        <div class="empty-sub">No verified creators found for this search. Try broadening the topic, changing the borough filter, or searching a related term. This tool only returns real, findable creators.</div>
+      </div>`;
+    return;
+  }
+
+  const cards = creators.map(c => {
+    const platformBadge = `badge-platform-${c.type_class || c.platform}`;
+    const outreachId = Math.random().toString(36).substr(2,8);
+    return `
+      <div class="creator-card type-${c.type_class || c.platform}">
+        <div class="card-top">
+          <div class="card-identity">
+            <div class="card-name">${c.name || 'Unknown'}</div>
+            <div class="card-handle">${c.handle || ''}</div>
+          </div>
+          <div class="card-badges">
+            <span class="badge ${platformBadge}">${(c.platform || '').toUpperCase()}</span>
+            ${c.age_bracket ? `<span class="badge badge-age">${c.age_bracket}</span>` : ''}
+            ${c.borough ? `<span class="badge badge-borough">${c.borough}</span>` : ''}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta-row">
+            <div class="meta-item">
+              <div class="meta-label">Niche</div>
+              <div class="meta-value">${c.niche || '—'}</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Reach</div>
+              <div class="meta-value">${c.reach || 'Not verified'}</div>
+            </div>
+          </div>
+          <div class="alignment-box">
+            <div class="alignment-label">Alignment to "${topic}"</div>
+            <div class="alignment-text">${c.alignment || '—'}</div>
+          </div>
+          <div class="outreach-box">
+            <div class="outreach-label">
+              Draft Outreach
+              <button class="copy-btn" onclick="copyText(document.getElementById('ot-${outreachId}').textContent, this)">Copy</button>
+            </div>
+            <div class="outreach-text" id="ot-${outreachId}">${c.outreach_draft || '—'}</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-note">Source: ${c.source_note || 'Web search'}</span>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="results-header">
+      <div class="results-title">Results for "${topic}"</div>
+      <div class="result-count">${creators.length} creator${creators.length !== 1 ? 's' : ''} found</div>
+    </div>
+    <div class="cards-grid">${cards}</div>`;
+}
+
+document.getElementById('topic-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.metaKey) runSearch();
+});
+</script>
+</body>
+</html>
