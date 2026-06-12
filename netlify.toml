@@ -1,7 +1,2 @@
 [functions]
   directory = "netlify/functions"
-
-[[headers]]
-  for = "/api/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
